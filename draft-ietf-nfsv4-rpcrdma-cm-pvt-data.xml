@@ -560,8 +560,7 @@ as long as they do not conflict with existing entries in this registry.
  anchor="section:19F962AD-CDE5-4216-BE3A-44BD238458EC">
 <t>
 The private data extension specified in this document
-inherits the security considerations
-of the link layer protocols it extends;
+inherits the security considerations of the protocols it extends;
 e.g., the MPA protocol, as specified in
 <xref target="RFC5044"/>
 and extended in

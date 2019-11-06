@@ -10,10 +10,11 @@
 <?rfc subcompact="no" ?>
 
 <rfc
+ category="std"
  docName="draft-ietf-nfsv4-rpcrdma-cm-pvt-data-latest"
- category="info"
  ipr="trust200902"
  submissionType="IETF"
+ updates="8166"
  xml:lang="en">
 
 <front>
@@ -48,14 +49,10 @@ RDMA Connection Manager Private Data For RPC-Over-RDMA Version 1
 This document specifies the format of RDMA-CM Private Data
 exchanged between RPC-over-RDMA version 1 peers
 as part of establishing a connection.
-Such private data is used to indicate peer support
-for remote invalidation
-and
-larger-than-default inline thresholds.
 The addition of the private data payload specified in this document
-is an OPTIONAL extension.
-The RPC-over-RDMA version 1 protocol does not require the payload
-to be present.
+is an optional extension
+that does not alter the RPC-over-RDMA version 1 protocol.
+This document updates RFC 8166.
 </t>
 
 </abstract>
@@ -72,7 +69,7 @@ The RPC-over-RDMA version 1 transport protocol
 <xref target="RFC8166"/>
 enables payload data transfer using
 Remote Direct Memory Access (RDMA)
-for upper layer protocols based on Remote Procedure Calls (RPC)
+for upper-layer protocols based on Remote Procedure Calls (RPC)
 <xref target="RFC5531"/>.
 The terms "Remote Direct Memory Access" (RDMA) and
 "Direct Data Placement" (DDP) are introduced in
@@ -119,6 +116,17 @@ The purpose of such a message exchange is to
 enable the connecting peers to indicate support for transport
 properties that are not defined in the base RPC-over-RDMA
 version 1 protocol defined in
+<xref target="RFC8166"/>.
+</t>
+<t>
+To enable current RPC-over-RDMA version 1 implementations
+to interoperate with implementations that support
+the private message format described in this document,
+implementation of the private data message is OPTIONAL.
+When the private data message has been successfully exchanged,
+peers may choose to perform extended RDMA semantics.
+However, the private message format
+does not alter the XDR definition specified in
 <xref target="RFC8166"/>.
 </t>
 <t>

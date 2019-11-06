@@ -412,7 +412,7 @@ from application-specific private data
 inserted by applications other than RPC-over RDMA version 1.
 Examples of other applications that
 make use of CM Private Data include
-iWARP, via an enhancement described in
+iWARP, via the MPA enhancement described in
 <xref target="RFC6581"/>,
 and
 iSCSI extensions for RDMA (iSER), as defined in
@@ -613,16 +613,28 @@ of the decision within 30 days.
  title="Security Considerations"
  anchor="section:19F962AD-CDE5-4216-BE3A-44BD238458EC">
 <t>
-The private data extension specified in this document
-inherits the security considerations of the protocols it extends;
-e.g., the MPA protocol, as specified in
-<xref target="RFC5044"/>
-and extended in
-<xref target="RFC6581"/>.
+The Private Data extension specified in this document
+inherits the security considerations of the protocols it extends,
+which in this case is defined in
+<xref target="RFC8166"/>.
+</t>
+<t>
+The integrity of CM Private Data and the authenticity of it's source
+is ensured by the use of the Reliable connected (RC)
+Queue Pair (QP) type, required by RPC-over-RDMA version 1.
+Any attempts to interfere with or hijack an RC connection
+will result in the connection being immediately terminated.
 Additional relevant analysis of RDMA security appears in
 the Security Considerations section of
 <xref target="RFC5042"/>.
 </t>
+<t>
+Improperly setting one of the fields in the private message payload
+will result in a greatly increased risk of disconnection
+(i.e., self-imposed Denial of Service).
+There is no increased risk of exposing upper-layer data inappropriately.
+</t>
+
 </section>
 
 </middle>

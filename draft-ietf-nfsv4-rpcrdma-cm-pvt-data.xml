@@ -41,7 +41,7 @@ RDMA Connection Manager Private Data For RPC-Over-RDMA Version 1
 
 <area>Transport</area>
 <workgroup>Network File System Version 4</workgroup>
-<keyword>NFS-Over-RDMA</keyword>
+<keyword>NFS-over-RDMA</keyword>
 
 <abstract>
 
@@ -369,19 +369,25 @@ The value is encoded as described in
  title="Interoperability Considerations"
  anchor="section:58229D50-C3E7-48D1-A82F-7720AC8A9F8B">
 <t>
-The extension described in this document is designed to allow
-RPC-over-RDMA version implementations that use this extension
-to interoperate fully with
-RPC-over-RDMA version 1 implementations that do not exchange this information.
-Realizing this goal requires that implementations of this extension
-follow the practices described in the rest of this section.
+The motivation for using CM Private Data is to enhance the
+RPC-over-RDMA version 1 connection model
+without altering the XDR definition of RPC-over-RDMA version 1.
 </t>
 <t>
-RPC-over-RDMA version 1 implementations that support
-the extension described in this document
-are intended to interoperate fully with
-RPC-over-RDMA version 1 implementations
-that do not recognize the exchange of CM Private Data.
+The extension described in this document is designed to allow
+RPC-over-RDMA version implementations that use CM Private Data
+to interoperate fully with
+RPC-over-RDMA version 1 implementations that do not exchange this information.
+Implementations that use this extension must also interoperate
+fully with RDMA implementations that use CM Private Data for other purposes.
+Realizing these goals require that implementations of this extension
+follow the practices described in the rest of this section.
+</t>
+
+<section
+ title="Amongst RPC-over-RDMA Version 1 Implementations"
+ anchor="section:9A3B285D-D557-4028-ACB0-60EA1C9C93BE">
+<t>
 When a peer does not receive a CM Private Data message
 which conforms to
 <xref target="section:99541DF3-E579-42B6-9C7A-D020926798F6"/>,
@@ -389,22 +395,41 @@ it needs to act as if the remote peer supports only the
 default RPC-over-RDMA version 1 settings,
 as defined in
 <xref target="RFC8166"/>.
-In other words, the peer is to behave as if a Private Data
+In other words, the peer MUST behave as if a Private Data
 message was received in which bit 15 of the Flags field is zero,
 and both Size fields contain the value zero.
 </t>
+</section>
+
+<section
+ title="Amongst Implementations of Other Upper-Layer Protocols"
+ anchor="section:0BD80E15-13FF-4210-A1D8-E0AE531821A4">
 <t>
-The Format Identifier field is provided in order to distinguish
-RPC-over-RDMA version 1 Private Data from private data
-inserted by layers below or above RPC-over RDMA version 1.
-During connection establishment,
-RPC-over-RDMA version 1 implementations
-check for this protocol number before decoding subsequent fields.
-If this protocol number is not present as the first 4 octets,
-an RPC-over-RDMA receiver needs to ignore the CM-Private Data
-(ie., behave as if no RPC-over-RDMA version 1 Private Data
-has been provided).
+The Format Identifier field in the message format defined
+in this document is provided to enable implementations
+to distinguish RPC-over-RDMA version 1 Private Data
+from application-specific private data
+inserted by applications other than RPC-over RDMA version 1.
+Examples of other applications that
+make use of CM Private Data include
+iWARP, via an enhancement described in
+<xref target="RFC6581"/>,
+and
+iSCSI extensions for RDMA (iSER), as defined in
+<xref target="RFC7145"/>.
 </t>
+<t>
+During connection establishment,
+an implementation of the extension described in this document
+checks for the special protocol number in the Format Identifier
+field before decoding subsequent fields.
+If this protocol number is not present as the first 4 octets,
+an RPC-over-RDMA version 1 receiver MUST ignore the CM Private Data,
+behaving as if no RPC-over-RDMA version 1 Private Data
+has been provided (see above).
+</t>
+</section>
+
 </section>
 
 </section>
@@ -616,6 +641,7 @@ Available from https://www.infinibandta.org/
 <?rfc include="reference.RFC.5531.xml"?>
 <?rfc include="reference.RFC.5666.xml"?>
 <?rfc include="reference.RFC.6581.xml"?>
+<?rfc include="reference.RFC.7145.xml"?>
 <?rfc include="reference.RFC.7530.xml"?>
 <?rfc include="reference.RFC.7861.xml"?>
 

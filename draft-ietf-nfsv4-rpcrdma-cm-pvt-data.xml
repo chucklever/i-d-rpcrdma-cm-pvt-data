@@ -670,7 +670,6 @@ Available from https://www.infinibandta.org/
 </reference>
 
 <?rfc include="reference.RFC.1813.xml"?>
-<?rfc include="reference.RFC.5044.xml"?>
 <?rfc include="reference.RFC.5531.xml"?>
 <?rfc include="reference.RFC.5666.xml"?>
 <?rfc include="reference.RFC.6581.xml"?>

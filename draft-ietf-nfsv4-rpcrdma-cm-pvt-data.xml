@@ -382,7 +382,7 @@ default RPC-over-RDMA version 1 settings,
 as defined in
 <xref target="RFC8166"/>.
 In other words, the peer is to behave as if a Private Data
-message was received in which bit 8 of the Flags field is zero,
+message was received in which bit 15 of the Flags field is zero,
 and both Size fields contain the value zero.
 </t>
 <t>

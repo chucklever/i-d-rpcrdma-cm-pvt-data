@@ -544,17 +544,11 @@ Protocol Category Group.
 The new registry is to be called the
 "RDMA-CM Private Data Identifier Registry".
 This is a registry of 32-bit numbers that identify
-the Upper Layer protocol associated with data
-that appears in the RDMA-CM Private Data area.
-</t>
-<t>
-The information that must be provided to add an entry to this registry will be
-an IESG-approved Standards Track specification
-defining the semantics and interoperability requirements
-of the proposed new value and the fields to be recorded in the registry.
+the upper-layer protocol associated with data that appears in
+the application-specific RDMA-CM Private Data area.
 The fields in this registry include:
-Field Identifier,
-Format Description,
+Protocol Number,
+Description,
 and
 Reference.
 </t>
@@ -566,11 +560,11 @@ The initial contents of this registry are a single entry:
  style="full"
  title="RDMA-CM Private Data Identifier Registry"
  anchor="table:336556D8-B52A-476E-8E9E-FDF4A4C7ED66">
-<ttcol align="left">Field Identifier</ttcol>
-<ttcol align="left">Format Description</ttcol>
+<ttcol align="left">Protocol Number</ttcol>
+<ttcol align="left">Description</ttcol>
 <ttcol align="left">Reference</ttcol>
 <c>0xf6ab0e18</c>
-<c>RPC-over-RDMA version 1 CM Private Data</c>
+<c>RPC-over-RDMA version 1</c>
 <c>[RFC-TBD]</c>
 </texttable>
 
@@ -579,13 +573,40 @@ Please replace RFC-TBD with the RFC number assigned to this document
 -->
 
 <t>
-The Expert Review policy, as defined in Section 4.5 of
-<xref target="RFC8126"/>
-is to be used to handle requests to add new entries to
-the "File Provenance Information Registry".
-New protocol numbers can be assigned at random
-as long as they do not conflict with existing entries in this registry.
+IANA is to assign subsequent new entries in this registry using
+the Expert Review policy as defined in Section 4.5 of
+<xref target="RFC8126"/>.
 </t>
+
+<section
+ title="Guidance for Designated Experts"
+ anchor="section:DB1C2628-A2D2-4EE7-8CD6-592F832C8C86">
+<t>
+The Designated Expert (DE),
+appointed by the responsible IESG area director,
+should ascertain the existence of suitable documentation that
+defines the semantics and format of the private data,
+and verify that the document is permanently and publicly available.
+Documentation produced outside the IETF must not conflict
+with work that is active or already published within the IETF.
+</t>
+<t>
+The new Reference field should contain
+a reference to that documentation.
+The DE can assign new protocol numbers at random
+as long as they do not conflict with existing entries in this registry.
+The Description field should contain the name of a
+distinct upper-layer RDMA consumer that will use the private data.
+</t>
+<t>
+The DE will post the request to the nfsv4 WG mailing list
+(or a successor to that list)
+for comment and review.
+The DE will approve or deny the request and publish notice
+of the decision within 30 days.
+</t>
+</section>
+
 </section>
 
 <section

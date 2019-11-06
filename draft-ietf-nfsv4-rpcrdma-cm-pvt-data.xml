@@ -282,7 +282,7 @@ without the need for additional protocol to be defined.
 With an InfiniBand lower layer, for example,
 RDMA connection setup uses a Connection Manager
 when establishing a Reliable Connection
-<xref target="IBARCH"/>.
+<xref target="IBA"/>.
 When an RPC-over-RDMA version 1 transport connection is established,
 the client (which actively establishes connections)
 and the server (which passively accepts connections)
@@ -597,8 +597,7 @@ the Security Considerations section of
 <references title="Informative References">
 
 <reference
- anchor="IBARCH"
- target="http://www.infinibandta.org/content/pages.php?pg=technology_download">
+ anchor="IBA">
 <front>
 <title>InfiniBand Architecture Specification Volume 1</title>
 <author>
@@ -607,6 +606,9 @@ the Security Considerations section of
 <date month="March" year="2015"/>
 </front>
 <seriesInfo name="Release" value="1.3"/>
+<annotation>
+Available from https://www.infinibandta.org/
+</annotation>
 </reference>
 
 <?rfc include="reference.RFC.1813.xml"?>

@@ -112,11 +112,13 @@ for existing RPC-over-RDMA version 1 implementations.
 This document specifies a simple, non-XDR-based message format
 designed to be passed between RPC-over-RDMA version 1 peers
 at the time each RDMA transport connection is first established.
-The purpose of such a message exchange is to
-enable the connecting peers to indicate support for transport
-properties that are not defined in the base RPC-over-RDMA
-version 1 protocol defined in
-<xref target="RFC8166"/>.
+The mechanism assumes that the underlying RDMA transport has a
+private data field that is passed between peers at connection time,
+such as is present in the iWARP protocol
+<xref target="RFC5040"/>
+or
+InfiniBand
+<xref target="IBA"/>.
 </t>
 <t>
 To enable current RPC-over-RDMA version 1 implementations
@@ -369,11 +371,6 @@ The value is encoded as described in
 <section
  title="Interoperability Considerations"
  anchor="section:58229D50-C3E7-48D1-A82F-7720AC8A9F8B">
-<t>
-The motivation for using CM Private Data is to enhance the
-RPC-over-RDMA version 1 connection model
-without altering the XDR definition of RPC-over-RDMA version 1.
-</t>
 <t>
 The extension described in this document is designed to allow
 RPC-over-RDMA version implementations that use CM Private Data

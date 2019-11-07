@@ -115,9 +115,9 @@ at the time each RDMA transport connection is first established.
 The mechanism assumes that the underlying RDMA transport has a
 private data field that is passed between peers at connection time,
 such as is present in the iWARP protocol
-<xref target="RFC5040"/>
+(described in Section 7.1 of <xref target="RFC5044"/>)
 or
-InfiniBand
+the InfiniBand Connection Manager
 <xref target="IBA"/>.
 </t>
 <t>
@@ -668,6 +668,7 @@ Available from https://www.infinibandta.org/
 </reference>
 
 <?rfc include="reference.RFC.1813.xml"?>
+<?rfc include="reference.RFC.5044.xml"?>
 <?rfc include="reference.RFC.5531.xml"?>
 <?rfc include="reference.RFC.5666.xml"?>
 <?rfc include="reference.RFC.6581.xml"?>

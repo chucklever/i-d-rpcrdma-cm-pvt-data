@@ -328,7 +328,8 @@ is to be formatted as follows:
 This field contains a fixed 32-bit value that identifies
 the content of the Private Data field as an RPC-over-RDMA
 version 1 CM Private Data message.
-The value of this field is always 0xf6ab0e18, in network byte order.
+In RPC-over-RDMA version 1 Private Data,
+the value of this field is always 0xf6ab0e18, in network byte order.
 The use of this field is further expanded upon in
 <xref target="section:58229D50-C3E7-48D1-A82F-7720AC8A9F8B"/>.
 </t>
@@ -405,8 +406,8 @@ and both Size fields contain the value zero.
  title="Amongst Implementations of Other Upper-Layer Protocols"
  anchor="section:0BD80E15-13FF-4210-A1D8-E0AE531821A4">
 <t>
-The Format Identifier field in the message format defined
-in this document is provided to enable implementations
+The Format Identifier field in the message format
+defined in this document is provided to enable implementations
 to distinguish RPC-over-RDMA version 1 Private Data
 from application-specific private data
 inserted by applications other than RPC-over RDMA version 1.
@@ -421,9 +422,9 @@ iSCSI extensions for RDMA (iSER), as defined in
 <t>
 During connection establishment,
 an implementation of the extension described in this document
-checks for the special protocol number in the Format Identifier
-field before decoding subsequent fields.
-If this protocol number is not present as the first 4 octets,
+checks the Format Identifier field before decoding subsequent fields.
+If the RPC-over-RDMA version 1 CM Private Data Format Identifier
+is not present as the first 4 octets,
 an RPC-over-RDMA version 1 receiver MUST ignore the CM Private Data,
 behaving as if no RPC-over-RDMA version 1 Private Data
 has been provided (see above).
@@ -503,7 +504,8 @@ When either peer on a connection clears this flag,
 the responder MUST use only RDMA Send when transmitting RPC Replies.
 </t>
 <t hangText="Bits 14 - 8:">
-These bits are reserved and are always zero.
+These bits are reserved and are always zero
+when the Version field contains 1.
 </t>
 </list>
 </t>
@@ -547,7 +549,7 @@ This is a registry of 32-bit numbers that identify
 the upper-layer protocol associated with data that appears in
 the application-specific RDMA-CM Private Data area.
 The fields in this registry include:
-Protocol Number,
+Format Identifier,
 Description,
 and
 Reference.
@@ -560,11 +562,11 @@ The initial contents of this registry are a single entry:
  style="full"
  title="RDMA-CM Private Data Identifier Registry"
  anchor="table:336556D8-B52A-476E-8E9E-FDF4A4C7ED66">
-<ttcol align="left">Protocol Number</ttcol>
-<ttcol align="left">Description</ttcol>
+<ttcol align="left">Format Identifier</ttcol>
+<ttcol align="left">Format Description</ttcol>
 <ttcol align="left">Reference</ttcol>
 <c>0xf6ab0e18</c>
-<c>RPC-over-RDMA version 1</c>
+<c>RPC-over-RDMA version 1 CM Private Data</c>
 <c>[RFC-TBD]</c>
 </texttable>
 
@@ -592,7 +594,7 @@ with work that is active or already published within the IETF.
 <t>
 The new Reference field should contain
 a reference to that documentation.
-The DE can assign new protocol numbers at random
+The DE can assign new Format Identifiers at random
 as long as they do not conflict with existing entries in this registry.
 The Description field should contain the name of a
 distinct upper-layer RDMA consumer that will use the private data.

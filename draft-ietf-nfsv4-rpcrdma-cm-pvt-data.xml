@@ -333,7 +333,7 @@ version 1 CM Private Data message.
 In RPC-over-RDMA version 1 Private Data,
 the value of this field is always 0xf6ab0e18, in network byte order.
 The use of this field is further expanded upon in
-<xref target="section:58229D50-C3E7-48D1-A82F-7720AC8A9F8B"/>.
+<xref target="section:0BD80E15-13FF-4210-A1D8-E0AE531821A4"/>.
 </t>
 <t hangText="Version:">
 This 8-bit field contains a message format version number.
@@ -406,15 +406,11 @@ and both Size fields contain the value zero.
 The Format Identifier field in the message format
 defined in this document is provided to enable implementations
 to distinguish RPC-over-RDMA version 1 Private Data
-from application-specific private data
-inserted by applications other than RPC-over RDMA version 1.
-Examples of other applications that
-make use of CM Private Data include
+from private data inserted at layers below RPC-over-RDMA version 1.
+An example of a layer below RPC-over-RDMA version 1 that
+makes use of CM Private Data is
 iWARP, via the MPA enhancement described in
-<xref target="RFC6581"/>,
-and
-iSCSI extensions for RDMA (iSER), as defined in
-<xref target="RFC7145"/>.
+<xref target="RFC6581"/>.
 </t>
 <t>
 During connection establishment,
@@ -425,6 +421,15 @@ is not present as the first 4 octets,
 an RPC-over-RDMA version 1 receiver MUST ignore the CM Private Data,
 behaving as if no RPC-over-RDMA version 1 Private Data
 has been provided (see above).
+</t>
+<t>
+Because the Format Identifier field is newer
+than some other potential users of private data (such as iWARP),
+there is a risk that a lower layer might inject its own private data
+with a payload somehow containing the identifier of RPC-over-RDMA version 1.
+It is recommended that RPC-over-RDMA version 1 implementations
+perform additional checks on the content of received CM private data
+before making use of it.
 </t>
 </section>
 
@@ -672,7 +677,6 @@ Available from https://www.infinibandta.org/
 <?rfc include="reference.RFC.5531.xml"?>
 <?rfc include="reference.RFC.5666.xml"?>
 <?rfc include="reference.RFC.6581.xml"?>
-<?rfc include="reference.RFC.7145.xml"?>
 <?rfc include="reference.RFC.7530.xml"?>
 <?rfc include="reference.RFC.7861.xml"?>
 

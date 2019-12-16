@@ -383,7 +383,7 @@ follow the practices described in the rest of this section.
 </t>
 
 <section
- title="Amongst RPC-over-RDMA Version 1 Implementations"
+ title="Interoperability with RPC-over-RDMA Version 1 Implementations"
  anchor="section:9A3B285D-D557-4028-ACB0-60EA1C9C93BE">
 <t>
 When a peer does not receive a CM Private Data message
@@ -400,7 +400,7 @@ and both Size fields contain the value zero.
 </section>
 
 <section
- title="Amongst Implementations of Other Upper-Layer Protocols"
+ title="Interoperability with Implementations of Other Upper-Layer Protocols"
  anchor="section:0BD80E15-13FF-4210-A1D8-E0AE531821A4">
 <t>
 The Format Identifier field in the message format

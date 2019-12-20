@@ -400,36 +400,40 @@ and both Size fields contain the value zero.
 </section>
 
 <section
- title="Interoperability with Implementations of Other Upper-Layer Protocols"
+ title="Interoperability Amongst RDMA Transports"
  anchor="section:0BD80E15-13FF-4210-A1D8-E0AE531821A4">
 <t>
-The Format Identifier field in the message format
-defined in this document is provided to enable implementations
+The Format Identifier field defined in
+<xref target="section:99541DF3-E579-42B6-9C7A-D020926798F6"/>
+is provided to enable implementations
 to distinguish RPC-over-RDMA version 1 Private Data
-from private data inserted at layers below RPC-over-RDMA version 1.
-An example of a layer below RPC-over-RDMA version 1 that
-makes use of CM Private Data is
-iWARP, via the MPA enhancement described in
+from private data inserted at other layers,
+such as the private data inserted by
+the iWARP MPAv2 enhancement described in
 <xref target="RFC6581"/>.
 </t>
 <t>
-During connection establishment,
-an implementation of the extension described in this document
-checks the Format Identifier field before decoding subsequent fields.
+As part of connection establishment,
+the received private data buffer is searched for the Format Identifier word.
+The offset of the Format Identifier is not restricted to any alignment.
 If the RPC-over-RDMA version 1 CM Private Data Format Identifier
-is not present as the first 4 octets,
-an RPC-over-RDMA version 1 receiver MUST ignore the CM Private Data,
-behaving as if no RPC-over-RDMA version 1 Private Data
-has been provided (see above).
+is not present,
+an RPC-over-RDMA version 1 receiver MUST
+behave as if no RPC-over-RDMA version 1 CM Private Data
+has been provided.
 </t>
 <t>
-Because the Format Identifier field is newer
-than some other potential users of private data (such as iWARP),
-there is a risk that a lower layer might inject its own private data
-with a payload somehow containing the identifier of RPC-over-RDMA version 1.
-It is recommended that RPC-over-RDMA version 1 implementations
-perform additional checks on the content of received CM private data
-before making use of it.
+Once the RPC-over-RDMA version 1 CM Private Data Format Identifier
+is found,
+the receiver parses the subsequent octets as
+RPC-over-RDMA version 1 CM Private Data.
+As additional assurance that the private data content is valid
+RPC-over-RDMA version 1 CM Private Data,
+the receiver should check that
+the format version number field contains a valid and recognized version number,
+the size of the private data does not overrun the length of the buffer,
+and
+all reserved flag bits are zero.
 </t>
 </section>
 
@@ -598,8 +602,8 @@ The new Reference field should contain
 a reference to that documentation.
 The DE can assign new Format Identifiers at random
 as long as they do not conflict with existing entries in this registry.
-The Description field should contain the name of a
-distinct upper-layer RDMA consumer that will use the private data.
+The Description field should contain the name of the
+RDMA consumer that will generate and use the private data.
 </t>
 <t>
 The DE will post the request to the nfsv4 WG mailing list

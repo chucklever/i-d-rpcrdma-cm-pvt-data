@@ -541,6 +541,34 @@ as the server-to-client inline threshold.
 </section>
 
 <section
+ title="Security Considerations"
+ anchor="section:19F962AD-CDE5-4216-BE3A-44BD238458EC">
+<t>
+The Private Data extension specified in this document
+inherits the security considerations of the protocols it extends,
+which in this case is defined in
+<xref target="RFC8166"/>.
+</t>
+<t>
+The integrity of CM Private Data and the authenticity of it's source
+is ensured by the use of the Reliable connected (RC)
+Queue Pair (QP) type, required by RPC-over-RDMA version 1.
+Any attempts to interfere with or hijack an RC connection
+will result in the connection being immediately terminated.
+Additional relevant analysis of RDMA security appears in
+the Security Considerations section of
+<xref target="RFC5042"/>.
+</t>
+<t>
+Improperly setting one of the fields in the private message payload
+will result in a greatly increased risk of disconnection
+(i.e., self-imposed Denial of Service).
+There is no increased risk of exposing upper-layer data inappropriately.
+</t>
+
+</section>
+
+<section
  title="IANA Considerations"
  anchor="section:8701C122-F206-4F87-8FA6-62F1CD648A14">
 <t>
@@ -613,34 +641,6 @@ The DE will approve or deny the request and publish notice
 of the decision within 30 days.
 </t>
 </section>
-
-</section>
-
-<section
- title="Security Considerations"
- anchor="section:19F962AD-CDE5-4216-BE3A-44BD238458EC">
-<t>
-The Private Data extension specified in this document
-inherits the security considerations of the protocols it extends,
-which in this case is defined in
-<xref target="RFC8166"/>.
-</t>
-<t>
-The integrity of CM Private Data and the authenticity of it's source
-is ensured by the use of the Reliable connected (RC)
-Queue Pair (QP) type, required by RPC-over-RDMA version 1.
-Any attempts to interfere with or hijack an RC connection
-will result in the connection being immediately terminated.
-Additional relevant analysis of RDMA security appears in
-the Security Considerations section of
-<xref target="RFC5042"/>.
-</t>
-<t>
-Improperly setting one of the fields in the private message payload
-will result in a greatly increased risk of disconnection
-(i.e., self-imposed Denial of Service).
-There is no increased risk of exposing upper-layer data inappropriately.
-</t>
 
 </section>
 

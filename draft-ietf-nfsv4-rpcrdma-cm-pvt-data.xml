@@ -176,15 +176,22 @@ There are a pair of inline thresholds for a connection:
 a client-to-server threshold and a server-to-client threshold.
 </t>
 <t>
-If an incoming message exceeds the size of a receiver's inline threshold,
-the receive operation fails and the connection is typically terminated.
-To convey a message larger than a receiver's inline threshold,
-an NFS client uses explicit RDMA data transfer operations,
-which are more expensive to use than RDMA Send.
+If an incoming RDMA message exceeds the size
+of a receiver's inline threshold,
+the receive operation fails
+and
+the RDMA provider typically terminates the connection.
+To convey an RPC message larger than the receiver's inline threshold
+without risking receive failure,
+a sender must use explicit RDMA data transfer operations,
+which are more expensive than an RDMA Send.
+See Sections 3.3 and 3.5 of
+<xref target="RFC8166"/>
+for a complete discussion.
 </t>
 <t>
 The default value of inline thresholds for RPC-over-RDMA version 1
-connections is 1024 bytes (see Section 3.3.3 of
+connections is 1024 bytes (as defined in Section 3.3.3 of
 <xref target="RFC8166"/>).
 This value is adequate for nearly all NFS version 3 procedures.
 </t>
@@ -524,9 +531,12 @@ when the Version field contains 1.
 Inline threshold sizes from 1KB to 256KB
 can be represented in the Send Size and Receive Size fields.
 A sender computes the encoded value by dividing
-the actual value by 1024 and subtracting one from the result.
+the buffer size, in octets, by 1024 and
+subtracting one from the result.
 A receiver decodes this value by performing
-a complementary set of operations.
+the inverse set of operations:
+it adds one to the encoded value and then multiplies that result
+by 1024.
 </t>
 <t>
 The client uses the smaller of its own send size and
@@ -713,14 +723,13 @@ Dave Minturn.
 </t>
 <t>
 Special thanks go to
+document shepherd
+Brian Pawlowski,
 Transport Area Director
 Magnus Westerlund,
 NFSV4 Working Group Chairs
-David Noveck,
-Spencer Shepler,
+David Noveck
 and
-Brian Pawlowski,
-NFSV4 Working Group Chair
 Spencer Shepler,
 and
 NFSV4 Working Group Secretary Thomas Haynes.

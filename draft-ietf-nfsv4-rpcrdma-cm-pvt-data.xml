@@ -554,28 +554,54 @@ as the server-to-client inline threshold.
  title="Security Considerations"
  anchor="section:19F962AD-CDE5-4216-BE3A-44BD238458EC">
 <t>
-The Private Data extension specified in this document
-inherits the security considerations of the protocols it extends,
-which in this case is defined in
-<xref target="RFC8166"/>.
+The reader is directed to the Security Considerations section of
+<xref target="RFC8166"/>
+for background and further discussion.
 </t>
 <t>
-The integrity of CM Private Data and the authenticity of it's source
-is ensured by the use of the Reliable connected (RC)
-Queue Pair (QP) type, required by RPC-over-RDMA version 1.
-Any attempts to interfere with or hijack an RC connection
-will result in the connection being immediately terminated.
-Additional relevant analysis of RDMA security appears in
-the Security Considerations section of
+The RPC-over-RDMA version 1 protocol framework depends
+on the semantics of the Reliable Connected (RC) queue pair (QP)
+type, as defined in Section 9.7.7 of
+<xref target="IBA"/>.
+The integrity of CM Private Data
+and
+the authenticity of its source
+are ensured by the exclusive use of RC queue pairs.
+Any attempt to interfere with or hijack data in transit
+on an RC connection
+results in the RDMA provider terminating the connection.
+</t>
+<t>
+Additional analysis of RDMA transport security
+appears in the Security Considerations section of
 <xref target="RFC5042"/>.
+That document recommends IPsec as
+the default transport layer security solution.
+When deployed with iWARP, IPsec establishes a protected channel
+before any iWARP operations are exchanged,
+thus it protects the exchange of Private Data
+that occurs as each QP is established.
+However, IPsec is not available for InfiniBand or RoCE deployments.
+Those fabrics rely on
+physical security
+and
+cyclic redundancy checks
+to protect network traffic.
 </t>
 <t>
-Improperly setting one of the fields in the private message payload
-will result in a greatly increased risk of disconnection
+Improperly setting one of the fields in a version 1
+Private Message can result in an increased risk of disconnection
 (i.e., self-imposed Denial of Service).
-There is no increased risk of exposing upper-layer data inappropriately.
+There is no additional risk of exposing upper-layer payloads
+after exchanging the Private Message format
+defined in the current document.
 </t>
-
+<t>
+In addition to describing the structure of a new format version,
+any document that extends the Private Data format described
+in the current document must discuss security considerations
+of new data items exchanged between connection peers.
+</t>
 </section>
 
 <section

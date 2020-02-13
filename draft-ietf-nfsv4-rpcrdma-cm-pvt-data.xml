@@ -46,7 +46,8 @@ RDMA Connection Manager Private Data For RPC-Over-RDMA Version 1
 <abstract>
 
 <t>
-This document specifies the format of RDMA-CM Private Data
+This document specifies the format of
+Remote Direct Memory Access - Connection Manager (RDMA-CM) Private Data
 exchanged between RPC-over-RDMA version 1 peers
 as part of establishing a connection.
 The addition of the private data payload specified in this document
@@ -102,7 +103,12 @@ that enables the use of remote invalidation
 </list>
 </t>
 <t>
-RPC-over-RDMA version 1 has no means of extending its XDR definition
+Each RPC-over-RDMA version 1 transport header follows the
+External Data Representation (XDR)
+<xref target="RFC4506"/>
+definition specified in <xref target="RFC8166"/>.
+However, RPC-over-RDMA version 1
+has no means of extending this definition
 in such a way that interoperability with existing implementations is preserved.
 As a result, an out-of-band mechanism is needed
 to help relieve these constraints
@@ -138,7 +144,7 @@ within the normal scope of such IETF work
 <xref target="section:96A18D5A-2AE4-490D-B140-B964302BF1DF"/>
 for further details).
 <xref target="section:8701C122-F206-4F87-8FA6-62F1CD648A14"/>
-of the current document defines an IANA registry for this purpose.
+of this document defines an IANA registry for this purpose.
 In addition, interoperation between
 implementations of RPC-over-RDMA version 1 that present this message format to peers
 and those that do not recognize this message format is guaranteed.
@@ -220,9 +226,9 @@ frequently-used RPC transactions avoid the cost of explicit RDMA operations.
  anchor="section:F82BDC05-F8A6-478C-A02C-BC308EE75A18">
 <t>
 After an RDMA data transfer operation completes,
-an RDMA consumer can use remote invalidation
-to request that the remote peer RNIC
-invalidate an STag
+an RDMA consumer can request
+that its peer's RDMA network interface card (RNIC)
+invalidate the Steering Tag (STag)
 associated with the data transfer
 <xref target="RFC5042"/>.
 </t>
@@ -277,8 +283,8 @@ in a single RPC or on the same connection.
 There are some NFS/RDMA client implementations whose STags
 are always safe to invalidate remotely.
 For such clients, indicating to the responder that remote
-invalidation is always safe can allow such invalidation
-without the need for additional protocol to be defined.
+invalidation is always safe can enable such invalidation
+without the need for additional protocol elements to be defined.
 </t>
 </section>
 
@@ -385,7 +391,7 @@ to interoperate fully with
 RPC-over-RDMA version 1 implementations that do not exchange this information.
 Implementations that use this extension must also interoperate
 fully with RDMA implementations that use CM Private Data for other purposes.
-Realizing these goals require that implementations of this extension
+Realizing these goals requires that implementations of this extension
 follow the practices described in the rest of this section.
 </t>
 
@@ -517,8 +523,11 @@ When either peer on a connection clears this flag,
 the responder MUST use only RDMA Send when transmitting RPC Replies.
 </t>
 <t hangText="Bits 14 - 8:">
-These bits are reserved and are always zero
-when the Version field contains 1.
+These bits are reserved.
+When the Version field contains 1,
+senders set these bits to zero
+and
+receivers MUST ignore their value.
 </t>
 </list>
 </t>
@@ -530,13 +539,21 @@ when the Version field contains 1.
 <t>
 Inline threshold sizes from 1KB to 256KB
 can be represented in the Send Size and Receive Size fields.
-A sender computes the encoded value by dividing
-the buffer size, in octets, by 1024 and
+These inline threshold values provide a pair of
+1024-octet-aligned maximum message lengths that
+guarantee Send and Receive operations
+do not fail due to length errors.
+</t>
+<t>
+A sender computes the encoded value by
+dividing its actual buffer size, in octets, by 1024
+and
 subtracting one from the result.
 A receiver decodes this value by performing
 the inverse set of operations:
-it adds one to the encoded value and then multiplies that result
-by 1024.
+it adds one to the encoded value
+and then
+multiplies that result by 1024.
 </t>
 <t>
 The client uses the smaller of its own send size and
@@ -687,6 +704,7 @@ of the decision within 30 days.
 <references title="Normative References">
 
 <?rfc include="reference.RFC.2119.xml"?>
+<?rfc include="reference.RFC.4506.xml"?>
 <?rfc include="reference.RFC.5040.xml"?>
 <?rfc include="reference.RFC.5042.xml"?>
 <?rfc include="reference.RFC.8126.xml"?>

@@ -333,7 +333,7 @@ is to be formatted as follows:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                       Format Identifier                       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Version    |     Flags     |   Send Size   | Receive Size  |
+|    Version    |  Reserved   |R|   Send Size   | Receive Size  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
 </figure>
@@ -356,10 +356,16 @@ and that each has the meaning defined in this section.
 Further considerations about the use of this field are discussed in
 <xref target="section:96A18D5A-2AE4-490D-B140-B964302BF1DF"/>.
 </t>
-<t hangText="Flags:">
-This 8-bit field contains bit flags that indicate the support
-status of optional features, such as remote invalidation.
-The meaning of these flags is defined in
+<t hangText="Reserved:">
+This 7-bit field is unused.
+Senders MUST set these bits to zero
+and
+receivers MUST ignore their value.
+</t>
+<t hangText="R:">
+This 1-bit field indicates that
+the sender supports remote invalidation.
+The field is set and interpreted as described in
 <xref target="section:1D624044-49CC-4464-9BEF-59EA2473ACBF"/>.
 </t>
 <t hangText="Send Size:">
@@ -380,6 +386,66 @@ The value is encoded as described in
 </t>
 </list>
 </t>
+
+<section
+ title="Using the R Field"
+ anchor="section:1D624044-49CC-4464-9BEF-59EA2473ACBF">
+<t>
+The R field indicates limited support for remote invalidate
+as described in
+<xref target="section:F82BDC05-F8A6-478C-A02C-BC308EE75A18"/>.
+When both connection peers have set this bit flag in their CM Private Data,
+the responder MAY use RDMA Send With Invalidate
+when transmitting RPC Replies.
+Each RDMA Send With Invalidate MUST invalidate an STag
+associated only with the XID in the rdma_xid field
+of the RPC-over-RDMA Transport Header it carries.
+</t>
+<t>
+When either peer on a connection clears this flag,
+the responder MUST use only RDMA Send when transmitting RPC Replies.
+</t>
+</section>
+
+<section
+ title="Send and Receive Size Values"
+ anchor="section:689BD9D4-9C3C-41C7-81F3-8BBE283D252B">
+<t>
+Inline threshold sizes from 1024 to 262144 octets
+can be represented in the Send Size and Receive Size fields.
+The inline threshold values provide a pair of
+1024-octet-aligned maximum message lengths that
+guarantee Send and Receive operations
+do not fail due to length errors.
+</t>
+<t>
+The minimum inline threshold for RPC-over-RDMA version 1
+is 1024 octets (see Section 3.3.3 of
+<xref target="RFC8166"/>).
+The values in the Send Size and Receive Size fields represent
+the unsigned number of additional kilo-octets of length
+beyond the first 1024 octets.
+Thus, a sender computes the encoded value by
+dividing its actual buffer size, in octets, by 1024
+and
+subtracting one from the result.
+A receiver decodes an incoming Size value by performing
+the inverse set of operations:
+it adds one to the encoded value
+and then
+multiplies that result by 1024.
+</t>
+<t>
+The client uses the smaller of its own send size and
+the server's reported receive size
+as the client-to-server inline threshold.
+The server uses the smaller of its own send size and
+the clients's reported receive size
+as the server-to-client inline threshold.
+</t>
+</section>
+
+</section>
 
 <section
  title="Interoperability Considerations"
@@ -443,13 +509,10 @@ RPC-over-RDMA version 1 CM Private Data.
 As additional assurance that the private data content is valid
 RPC-over-RDMA version 1 CM Private Data,
 the receiver should check that
-the format version number field contains a valid and recognized version number,
-the size of the private data does not overrun the length of the buffer,
+the format version number field contains a valid and recognized version number
 and
-all reserved flag bits are zero.
+the size of the private data does not overrun the length of the buffer.
 </t>
-</section>
-
 </section>
 
 </section>
@@ -470,7 +533,7 @@ the format described in this document.
 <t>
 Any modification faces the problem of interoperating properly
 with implementations of RPC-over-RDMA version 1
-that are unaware of this existence of the new format.
+that are unaware of the existence of the new format.
 These include implementations that that do not recognize
 the exchange of CM Private Data
 as well as
@@ -497,80 +560,8 @@ extended formats are unlikely to do so.
 New formats would take the form of extensions
 of the format described in this document with added fields
 starting at byte eight of the format
-and changes to the definition of previously reserved flags.
+or changes to the definition of bits in the Reserved field.
 </t>
-
-<section
- title="Feature Support Flags"
- anchor="section:1D624044-49CC-4464-9BEF-59EA2473ACBF">
-<t>
-The bits in the Flags field are labeled from bit 8 to bit 15,
-as shown in the diagram above.
-When the Version field contains the value "1",
-the bits in the Flags field are to be set as follows:
-</t>
-<t>
-<list style="hanging">
-<t hangText="Bit 15:">
-When both connection peers have set this flag in their CM Private Data,
-the responder MAY use RDMA Send With Invalidate
-when transmitting RPC Replies.
-Each RDMA Send With Invalidate MUST invalidate an STag
-associated only with the XID in the rdma_xid field
-of the RPC-over-RDMA Transport Header it carries.
-<vspace/>
-When either peer on a connection clears this flag,
-the responder MUST use only RDMA Send when transmitting RPC Replies.
-</t>
-<t hangText="Bits 14 - 8:">
-These bits are reserved.
-When the Version field contains 1,
-senders set these bits to zero
-and
-receivers MUST ignore their value.
-</t>
-</list>
-</t>
-</section>
-
-<section
- title="Inline Threshold Values"
- anchor="section:689BD9D4-9C3C-41C7-81F3-8BBE283D252B">
-<t>
-Inline threshold sizes from 1024 to 262144 octets
-can be represented in the Send Size and Receive Size fields.
-The inline threshold values provide a pair of
-1024-octet-aligned maximum message lengths that
-guarantee Send and Receive operations
-do not fail due to length errors.
-</t>
-<t>
-The minimum inline threshold for RPC-over-RDMA version 1
-is 1024 octets (see Section 3.3.3 of
-<xref target="RFC8166"/>).
-The values in the Send Size and Receive Size fields represent
-the unsigned number of additional kilo-octets of length
-beyond the first 1024 octets.
-Thus, a sender computes the encoded value by
-dividing its actual buffer size, in octets, by 1024
-and
-subtracting one from the result.
-A receiver decodes an incoming Size value by performing
-the inverse set of operations:
-it adds one to the encoded value
-and then
-multiplies that result by 1024.
-</t>
-<t>
-The client uses the smaller of its own send size and
-the server's reported receive size
-as the client-to-server inline threshold.
-The server uses the smaller of its own send size and
-the clients's reported receive size
-as the server-to-client inline threshold.
-</t>
-</section>
-
 </section>
 
 <section

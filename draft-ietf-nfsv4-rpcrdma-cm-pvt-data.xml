@@ -700,18 +700,6 @@ of the decision within 30 days.
 
 <references title="Normative References">
 
-<?rfc include="reference.RFC.2119.xml"?>
-<?rfc include="reference.RFC.4506.xml"?>
-<?rfc include="reference.RFC.5040.xml"?>
-<?rfc include="reference.RFC.5042.xml"?>
-<?rfc include="reference.RFC.8126.xml"?>
-<?rfc include="reference.RFC.8166.xml"?>
-<?rfc include="reference.RFC.8174.xml"?>
-
-</references>
-
-<references title="Informative References">
-
 <reference
  anchor="IBA">
 <front>
@@ -726,6 +714,18 @@ of the decision within 30 days.
 Available from https://www.infinibandta.org/
 </annotation>
 </reference>
+
+<?rfc include="reference.RFC.2119.xml"?>
+<?rfc include="reference.RFC.4506.xml"?>
+<?rfc include="reference.RFC.5040.xml"?>
+<?rfc include="reference.RFC.5042.xml"?>
+<?rfc include="reference.RFC.8126.xml"?>
+<?rfc include="reference.RFC.8166.xml"?>
+<?rfc include="reference.RFC.8174.xml"?>
+
+</references>
+
+<references title="Informative References">
 
 <?rfc include="reference.RFC.1813.xml"?>
 <?rfc include="reference.RFC.5044.xml"?>

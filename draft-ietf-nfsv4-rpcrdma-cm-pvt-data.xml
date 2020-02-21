@@ -317,9 +317,9 @@ For RPC-over-RDMA version 1, the CM Private Data field
 is formatted as described in the following subsection.
 RPC clients and servers use the same format.
 If the capacity of the Private Data field is too small
-to contain this message format,
+to contain this message format
+or
 the underlying RDMA transport is not managed by a Connection Manager,
-or the underlying RDMA transport uses Private Data for its own purposes,
 the CM Private Data field cannot be used on behalf of RPC-over-RDMA version 1.
 </t>
 <t>

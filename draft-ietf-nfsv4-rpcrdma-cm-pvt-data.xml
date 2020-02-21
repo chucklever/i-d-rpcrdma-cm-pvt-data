@@ -660,7 +660,7 @@ Please replace RFC-TBD with the RFC number assigned to this document
 
 <t>
 IANA is to assign subsequent new entries in this registry using
-the Expert Review policy as defined in Section 4.5 of
+the Specification Required policy as defined in Section 4.6 of
 <xref target="RFC8126"/>.
 </t>
 

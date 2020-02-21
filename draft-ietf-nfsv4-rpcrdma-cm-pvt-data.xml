@@ -653,6 +653,7 @@ the upper-layer protocol associated with data that appears in
 the application-specific RDMA-CM Private Data area.
 The fields in this registry include:
 Format Identifier,
+Format Length (in octets),
 Description,
 and
 Reference.
@@ -666,9 +667,11 @@ The initial contents of this registry are a single entry:
  title="RDMA-CM Private Data Identifier Registry"
  anchor="table:336556D8-B52A-476E-8E9E-FDF4A4C7ED66">
 <ttcol align="left">Format Identifier</ttcol>
-<ttcol align="left">Format Description</ttcol>
+<ttcol align="left">Length</ttcol>
+<ttcol align="left">Description</ttcol>
 <ttcol align="left">Reference</ttcol>
 <c>0xf6ab0e18</c>
+<c>8</c>
 <c>RPC-over-RDMA version 1 CM Private Data</c>
 <c>[RFC-TBD]</c>
 </texttable>
@@ -693,20 +696,26 @@ defines the semantics and format of the private data,
 and verify that the document is permanently and publicly available.
 Documentation produced outside the IETF must not conflict
 with work that is active or already published within the IETF.
-</t>
-<t>
 The new Reference field should contain
 a reference to that documentation.
-The DE can assign new Format Identifiers at random
-as long as they do not conflict with existing entries in this registry.
-The Description field should contain the name of the
-RDMA consumer that will generate and use the private data.
 </t>
 <t>
-The DE will post the request to the nfsv4 WG mailing list
+The Description field should contain the name of the
+upper-layer protocol
+that generates and uses the private data.
+</t>
+<t>
+The DE should assign a new Format Identifier so that
+it does not conflict with existing entries in this registry,
+and so that
+it is not likely to be mistaken
+as part of the payload of other registered formats.
+</t>
+<t>
+The DE shall post the request to the nfsv4 WG mailing list
 (or a successor to that list, if such a list exists),
 for comment and review.
-The DE will approve or deny the request and publish notice
+The DE shall approve or deny the request and publish notice
 of the decision within 30 days.
 </t>
 </section>

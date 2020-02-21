@@ -586,9 +586,10 @@ on an RC connection
 results in the RDMA provider terminating the connection.
 </t>
 <t>
-Additional analysis of RDMA transport security
-appears in the Security Considerations section of
-<xref target="RFC5042"/>.
+The Security Considerations section of
+<xref target="RFC5042"/>
+refers the reader to further relevant discussion
+of generic RDMA transport security.
 That document recommends IPsec as
 the default transport layer security solution.
 When deployed with iWARP, IPsec establishes a protected channel

@@ -604,18 +604,36 @@ cyclic redundancy checks
 to protect network traffic.
 </t>
 <t>
+Exchanging the information
+contained in the Private Message format defined in this document
+does not expose upper-layer payloads to an attacker.
+Furthermore, the behavior changes that occur
+as a result of processing the CM Private Data
+format described in the current document
+do not introduce any new risk of exposure
+of upper-layer payload data.
+</t>
+<t>
 Improperly setting one of the fields in a version 1
 Private Message can result in an increased risk of disconnection
 (i.e., self-imposed Denial of Service).
-There is no additional risk of exposing upper-layer payloads
-after exchanging the Private Message format
-defined in the current document.
+A similar risk can arise
+if non-RPC-over-RDMA CM Private Data
+inadvertently contains the Format Identifier that
+identifies this protocol's data structure.
+Additional checking of incoming Private Data,
+as described in
+<xref target="section:0BD80E15-13FF-4210-A1D8-E0AE531821A4"/>,
+can help reduce this risk.
 </t>
 <t>
 In addition to describing the structure of a new format version,
 any document that extends the Private Data format described
 in the current document must discuss security considerations
 of new data items exchanged between connection peers.
+Such documents should also explore the risks
+of erroneously identifying non-RPC-over-RDMA CM Private Data
+as the new format.
 </t>
 </section>
 

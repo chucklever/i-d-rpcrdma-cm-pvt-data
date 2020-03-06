@@ -573,14 +573,18 @@ The reader is directed to the Security Considerations section of
 for background and further discussion.
 </t>
 <t>
-The RPC-over-RDMA version 1 protocol framework depends
-on the semantics of the Reliable Connected (RC) queue pair (QP)
-type, as defined in Section 9.7.7 of
-<xref target="IBA"/>.
 The integrity of CM Private Data
 and
 the authenticity of its source
-are ensured by the exclusive use of RC queue pairs.
+are ensured by the exclusive use of reliable queue pairs.
+iWARP queue pairs have neither a datagram nor an unreliable mode,
+therefore they are always reliable connections
+<xref target="RFC5040"/>.
+On InfiniBand and RoCE,
+the RPC-over-RDMA version 1 protocol framework depends
+on the semantics of the Reliable Connected (RC) queue pair (QP)
+type, as defined in Section 9.7.7 of
+<xref target="IBA"/>.
 Any attempt to interfere with or hijack data in transit
 on an RC connection
 results in the RDMA provider terminating the connection.
@@ -728,6 +732,18 @@ of the decision within 30 days.
 
 <references title="Normative References">
 
+<?rfc include="reference.RFC.2119.xml"?>
+<?rfc include="reference.RFC.4506.xml"?>
+<?rfc include="reference.RFC.5040.xml"?>
+<?rfc include="reference.RFC.5042.xml"?>
+<?rfc include="reference.RFC.8126.xml"?>
+<?rfc include="reference.RFC.8166.xml"?>
+<?rfc include="reference.RFC.8174.xml"?>
+
+</references>
+
+<references title="Informative References">
+
 <reference
  anchor="IBA">
 <front>
@@ -742,18 +758,6 @@ of the decision within 30 days.
 Available from https://www.infinibandta.org/
 </annotation>
 </reference>
-
-<?rfc include="reference.RFC.2119.xml"?>
-<?rfc include="reference.RFC.4506.xml"?>
-<?rfc include="reference.RFC.5040.xml"?>
-<?rfc include="reference.RFC.5042.xml"?>
-<?rfc include="reference.RFC.8126.xml"?>
-<?rfc include="reference.RFC.8166.xml"?>
-<?rfc include="reference.RFC.8174.xml"?>
-
-</references>
-
-<references title="Informative References">
 
 <?rfc include="reference.RFC.1813.xml"?>
 <?rfc include="reference.RFC.5044.xml"?>

@@ -4,9 +4,9 @@
 
 Network File System Version 4                                   C. Lever
 Internet-Draft                                                    Oracle
-Updates: 8166 (if approved)                                March 6, 2020
+Updates: 8166 (if approved)                                 July 4, 2020
 Intended status: Standards Track
-Expires: September 7, 2020
+Expires: January 5, 2021
 
 
     RDMA Connection Manager Private Data For RPC-Over-RDMA Version 1
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 7, 2020.
+   This Internet-Draft will expire on January 5, 2021.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Lever                   Expires September 7, 2020               [Page 1]
+Lever                    Expires January 5, 2021                [Page 1]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Lever                   Expires September 7, 2020               [Page 2]
+Lever                    Expires January 5, 2021                [Page 2]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    o  Unlike most other contemporary RDMA-enabled storage protocols,
@@ -165,9 +165,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 3]
+Lever                    Expires January 5, 2021                [Page 3]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
 3.1.  Inline Threshold Size
@@ -221,9 +221,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 4]
+Lever                    Expires January 5, 2021                [Page 4]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    invalidated, finalizing the results of the RPC is made simpler and
@@ -277,9 +277,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 5]
+Lever                    Expires January 5, 2021                [Page 5]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    For RPC-over-RDMA version 1, the CM Private Data field is formatted
@@ -333,9 +333,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 6]
+Lever                    Expires January 5, 2021                [Page 6]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
 4.1.  Using the R Field
@@ -389,9 +389,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 7]
+Lever                    Expires January 5, 2021                [Page 7]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
 5.1.  Interoperability with RPC-over-RDMA Version 1 Implementations
@@ -445,9 +445,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 8]
+Lever                    Expires January 5, 2021                [Page 8]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    Given the message format described in this document, these
@@ -501,9 +501,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020               [Page 9]
+Lever                    Expires January 5, 2021                [Page 9]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    Improperly setting one of the fields in a version 1 Private Message
@@ -557,9 +557,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020              [Page 10]
+Lever                    Expires January 5, 2021               [Page 10]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    published within the IETF.  The new Reference field should contain a
@@ -613,9 +613,9 @@ Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
 
 
 
-Lever                   Expires September 7, 2020              [Page 11]
+Lever                    Expires January 5, 2021               [Page 11]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -669,9 +669,9 @@ Acknowledgments
 
 
 
-Lever                   Expires September 7, 2020              [Page 12]
+Lever                    Expires January 5, 2021               [Page 12]
 
-Internet-Draft        RPC-Over-RDMA CM Private Data           March 2020
+Internet-Draft        RPC-Over-RDMA CM Private Data            July 2020
 
 
    Marsden for their support of this work.  Also, thanks to expert
@@ -725,4 +725,4 @@ Author's Address
 
 
 
-Lever                   Expires September 7, 2020              [Page 13]
+Lever                    Expires January 5, 2021               [Page 13]

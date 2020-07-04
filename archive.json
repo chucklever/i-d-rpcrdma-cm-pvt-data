@@ -1,0 +1,331 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2020-07-04T17:37:32.721084+00:00",
+  "repo": "chucklever/i-d-rpcrdma-cm-pvt-data",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWU1MTcyNDczMTM=",
+      "title": "Issues found during AD write-up",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/1",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "So this private data field is only existing in Infinite Band Connection manger? So what this document is defining a structure to a field which currently don\u2019t have any structure but are part of a protocol defined by another body?\r\n\r\nHave this work been formally agreed with IBTA?\r\n\r\nOr is the relationship to the connection manager used to establish the RPC over RDMA different, if that is the case it needs to be better explained.\r\n\r\nIs it bit 8 or bit 15 of the flags field that are used. Section 5.1 and 4.1 do not agree. The later thinks it is bit 8.\r\n\r\nSection 5: Is there only going to be one object of private data forever in the relevant communication? If not, why isn\u2019t this a well-specified TLV so that unknow type entries can be skipped to the nest object?\r\n\r\nEven if there ever is going to be one entry, can you be more formal in description of what is a valid message using another format identifier, is that only the 32-bit field of the format Identifier, or also the version.\r\n\r\nIsn\u2019t the version field just unnecessary? If one needs version using another format identifier is more easy than the identifier + version construct.\r\n\r\nSection 6: The IANA consideration is confusing. If the specification for a CM private data format requires IESG approval, then why have the expert review policy. In that case one can simply use the IESG approval policy instead. However, requiring any type of IESG approval here appear to be a way to high bar. I think expert review is likely appropriate, but the guidance to the Experts needs to be clearer. For example what happens if IBTA want to use this to add some format?\r\n\r\nSection 7: The security consideration. I am missing any discussion about the security requirements that the actual extension. It appears that integrity and source authenticity are required for safe operation of these two extensions.\r\n\r\nIBARCH URL Is not valid, it results in a 404.",
+      "createdAt": "2019-11-04T16:01:25Z",
+      "updatedAt": "2019-11-08T14:56:05Z",
+      "closedAt": "2019-11-08T14:56:05Z",
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Tom Talpey suggests:\r\n\r\nPrivate Data is supported by multiple RDMA protocols, including iWARP aka RDDP. The document takes care to define a payload which is supported by all.\r\n\r\nThe Infiniband-style private data exchange, used by RoCE and InfiniBand, is implemented in the IB Connection Manager, and is out of scope for IETF. However the iWARP one is supported by MPA in RFC5044 and RFC6581. But this MPA support isn\u2019t mentioned until the Security Considerations section, so I\u2019d agree that adding discussion of all these mappings earlier in the document is a good idea.\r\n\r\nRFC6581 has a similar approach btw. It adds private data payloads which are exchanged by the lower RDMA layers. And it provides some possibly useful text:\r\n\r\n>    As currently defined, DDP connection establishment requires the ULP\r\n>    to encode the RDMA configuration in the application-specific Private\r\n>    Data.  This results in undesirable duplication of logic to cover RDMA\r\n>    characteristics of both InfiniBand and RDDP for each ULP, and to\r\n>    specify for InfiniBand and RDDP the extraction of the RDMA\r\n>    characteristics for each ULP.\r\n>  \r\n>    Both RDDP and InfiniBand support an initial Private Data exchange;\r\n>    therefore, a standard definition of the RDMA characteristics within\r\n>    the Private Data section would enable common connection establishment\r\n>    APIs to format the RDMA characteristics based on the same API\r\n>    information used when establishing either protocol to form the\r\n>    connection.  The application would then only have to indicate that it\r\n>    was using this standard format to enable common connection\r\n>    establishment procedures to apply common code to properly parse these\r\n>    fields and configure the RDMA endpoints accordingly.  Exchange of\r\n>    parameters necessary to perform RDMA Read operations is a common\r\n>    usage of the initial Private Data exchange.\r\n\r\nIn 6581, the text above provides justification (\u201cundesirable duplication of logic\u201d). But for this document, the motivation is to enhance the connection model without extending the rpcrdmav1 protocol. Similar goal, but may lead to subtly different text.",
+          "createdAt": "2019-11-04T18:11:44Z",
+          "updatedAt": "2019-11-04T18:11:44Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Further comments after first revision:\r\n\r\nSection 1: I am missing in the introduction of the assumption that to be able to\r\nuse this option one requires an ULP with a private data field. I think there\r\nshould be a paragraph here providing that context and include infromational\r\nreferences to protocols that may use this extension. And I think including that\r\nIETF defined ULP here as one option in addition to IBA would be good. \r\n\r\nSection 4 calls the 32-bit ID for format identifier, while the IANA Section\r\ncalls it protocol number. Please align the language here. Also the name of the\r\nformat is inconsistent after these latest changes. I think the more extensive\r\nname of the format was clearer then what is propsoed now. Becasue it is really\r\nthis specific option that is identified, not RPC over RDMA protocol in general. \r\n\r\nSection 4: First paragraph. Depending on what is added to Section 1, this may or\r\nmay not need this first paragraph in the current form. But, I get the\r\nimpression, that this text either isn't needed here or needs to contain way more\r\ndetails for the specific protocol. I think the later is hard to do, especially\r\nfor an protocol that we don't have change control over. \r\n\r\nSection 6.1: The appointment of the designated expert is done by the IESG and\r\nnot the Area Director themselves. See section 5.2.1 of RFC 8126. \r\n\r\nSection 6.1:\r\n\"The DE will post the request to the nfsv4 WG mailing list (or a successor to\r\nthat list) for comment and review.  The DE will approve\tor deny the request and\r\npublish notice of the decision within 30 days.\"\r\n\r\nI would propose that this is reworded so that it will not be necessary for the\r\nIETF to designate a successor list, even if there are no real community. I would\r\npropose a simple addition like:\r\n\r\nThe DE will post the request to the nfsv4 WG mailing list (or a successor to\r\nthat list), if such a list exist, for comment and review.",
+          "createdAt": "2019-11-07T17:52:59Z",
+          "updatedAt": "2019-11-07T17:52:59Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Revision -05 corrects these issues.",
+          "createdAt": "2019-11-08T14:56:05Z",
+          "updatedAt": "2019-11-08T14:56:05Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWU1MTc5MTk2Mjg=",
+      "title": "Change in status to Proposed Standard",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/2",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "During AD write-up, Magnus pointed out that this document should be a Proposed Standard rather than Informational. I checked with Tom Talpey on this (emphasis mine):\r\n\r\n> TL;DR **Proposed Standard is appropriate.**\r\n> \r\n> I may be the guilty party here. When Chuck originally was exploring using private data to extend rpcrdmav1, I encouraged him to publish the format as a draft. By design, the private data is optional, for both the sender and the receiver. Its presence, and its recognition at the peer, drives the extended features.\r\n>  \r\n> At the time, the concern for standardization was whether it would be of interest to the WG, and/or to other implementations. Its adoption as a WG item settles that.\r\n>  \r\n> When published as Proposed Standard, **the document should additionally be tagged as an optional extension to RFC8166.**",
+      "createdAt": "2019-11-05T17:33:20Z",
+      "updatedAt": "2019-11-06T19:27:53Z",
+      "closedAt": "2019-11-06T19:27:53Z",
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "I clarified Tom's intention here about tagging this document as an optional extension. The document will Update RFC 8166, but the Abstract and Introduction will explain that this is an optional extension that does not change the on-the-wire upper-layer protocol.",
+          "createdAt": "2019-11-06T15:44:02Z",
+          "updatedAt": "2019-11-06T15:44:22Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU1MTg1ODc1MDI=",
+      "title": "IBARCH URL Is not valid, it results in a 404.",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/3",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Filing this as a separate issue, since it is relevant to several other documents.\r\n\r\nThe current URL listed in -04 is http://www.infinibandta.org/content/pages.php?pg=technology_download . This URL appears in other documents, including RFC 5040, but is no longer valid. The IBTA appears to have reworked their web site.\r\n\r\nProposed and rejected:\r\n * http://www.infinibandta.org/specs - also no longer valid\r\n * https://www.infinibandta.org/ibta-specification/ - not specific to this document\r\n * https://www.infinibandta.org/ibta-specifications-download/ - not specific to this document\r\n * https://cw.infinibandta.org/document/dl/7859 - marked Proprietary and Confidential, is behind the registration wall",
+      "createdAt": "2019-11-06T16:32:33Z",
+      "updatedAt": "2019-11-06T19:32:31Z",
+      "closedAt": "2019-11-06T19:32:31Z",
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Checked RFC 7322bis for guidance on approved styles of bibliographic citation. No preference, many variations allowed (4.8.6. References Section). The Wisconsin guide suggests one of these:\r\n\r\n* MLA - InfiniBand Trade Association. InfiniBand Architecture Specification : Release 1.0. [Portland, OR] : InfiniBand Trade Association, 2000.\r\n* APA - InfiniBand Trade Association. (2000). InfiniBand architecture specification : release 1.0. [Portland, OR] : InfiniBand Trade Association,\r\n* CHICAGO - InfiniBand Trade Association. InfiniBand Architecture Specification : Release 1.0. [Portland, OR] : InfiniBand Trade Association, 2000.",
+          "createdAt": "2019-11-06T19:20:29Z",
+          "updatedAt": "2019-11-06T19:20:29Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Bibtex might look like this:\r\n\r\n@INPROCEEDINGS{Hamada_infinibandtrade,\r\n    author = {Tsuyoshi Hamada and Naohito Nakasato},\r\n    title = {InfiniBand Trade Association, InfiniBand Architecture Specification, Volume 1, Release 1.0,&quot; http://www.infinibandta.com},\r\n    booktitle = {in International Conference on Field Programmable Logic and Applications, 2005},\r\n    year = {},\r\n    pages = {366--373}\r\n}",
+          "createdAt": "2019-11-06T19:23:58Z",
+          "updatedAt": "2019-11-06T19:23:58Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Another alternative:\r\n\r\nInfiniBand Trade Association, \"InfiniBand Architecture Specification, Volume 1, Release 1.0,\" October 2000. Available from http://www.infinibandta.org.",
+          "createdAt": "2019-11-06T19:24:22Z",
+          "updatedAt": "2019-11-06T19:24:36Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWU1Mzc3OTMzNTM=",
+      "title": "Revise Section 4.1.2",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/4",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Expert review called out the weaknesses of the format identifier word.\r\n\r\nReviewer:\r\n> I agree that the format specifier is useless. There are many existing users which could be setting the private data to anything.  You really need to rely on the port numbers being correct, with checks on the other fields detecting mismatched protocols.\r\n\r\nLever:\r\n> Other reviewers have been ambivalent about the format identifier, but we don't have a better solution at the moment. The problem is the port numbers are all arbitrary. AFAIK they are not used in a way that identify the connection as RPC.\r\n> The 2049 destination port number means \"NFS\" but that's a layer /above/ RPC/RDMA.\r\n\r\nTalpey:\r\n> This is not the purpose of the identifier. It is there to signal to the receiver that the payload is the one defined in the document. If the identifier is not present, the receiver will ignore the private data. This means the identifier must be defined, and present. It's not meant to be universal. Yes, there's a risk that another layer injects its own private data, with a payload somehow containing the identifier. That might warrant a sentence or two.\r\n\r\nI propose that text explaining the risks (Talpey) be introduced. In addition, it's not likely that an RPC consumer will attempt to use the CM private data. Remove mention of \"protocols above RPC/RDMA\" using it. Also, it's likely that only transport layer protocols (ie., iWARP) will use CM private data at the same time as RPC/RDMA.",
+      "createdAt": "2019-12-13T21:51:31Z",
+      "updatedAt": "2019-12-20T15:47:22Z",
+      "closedAt": "2019-12-20T15:47:22Z",
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "First take:\r\n\r\n> 4.1.2.  Amongst Implementations of Other Upper-Layer Protocols\r\n> \r\n>   The Format Identifier field in the message format defined in this\r\n>   document is provided to enable implementations to distinguish RPC-\r\n>   over-RDMA version 1 Private Data from private data inserted at layers\r\n>   below RPC-over-RDMA version 1.  An example of a layer below RPC-over-\r\n>   RDMA version 1 that makes use of CM Private Data is iWARP, via the\r\n>   MPA enhancement described in [RFC6581].\r\n> \r\n>   During connection establishment, an implementation of the extension\r\n>   described in this document checks the Format Identifier field before\r\n>   decoding subsequent fields.  If the RPC-over-RDMA version 1 CM\r\n>   Private Data Format Identifier is not present as the first 4 octets,\r\n>   an RPC-over-RDMA version 1 receiver MUST ignore the CM Private Data,\r\n>   behaving as if no RPC-over-RDMA version 1 Private Data has been\r\n>   provided (see above).\r\n> \r\n>   Because the Format Identifier field is newer than some other\r\n>   potential users of private data (such as iWARP), there is a risk that\r\n>   a lower layer might inject its own private data with a payload\r\n>   somehow containing the identifier of RPC-over-RDMA version 1.  It is\r\n>   recommended that RPC-over-RDMA version 1 implementations perform\r\n>   additional checks on the content of received CM private data before\r\n>   making use of it.",
+          "createdAt": "2019-12-18T22:16:37Z",
+          "updatedAt": "2019-12-18T22:16:37Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Based on feedback from Tom, here is take 2:\r\n\r\n> 4.1.2.  Interoperability Amongst RDMA Transports\r\n> \r\n>   The Format Identifier field defined in Section 4 is provided to\r\n>   enable implementations to distinguish RPC-over-RDMA version 1 Private\r\n>   Data from private data inserted at other layers, such as the private\r\n>   data inserted by the iWARP MPAv2 enhancement described in [RFC6581].\r\n> \r\n>   As part of connection establishment, the received private data buffer\r\n>   is searched for the Format Identifier word.  If the RPC-over-RDMA\r\n>   version 1 CM Private Data Format Identifier is not present, an RPC-\r\n>   over-RDMA version 1 receiver MUST behave as if no RPC-over-RDMA\r\n>   version 1 CM Private Data has been provided.\r\n> \r\n>   Once the RPC-over-RDMA version 1 CM Private Data Format Identifier is\r\n>   found, the receiver parses the subsequent octets as RPC-over-RDMA\r\n>   version 1 CM Private Data.  As additional assurance that the private\r\n>   data content is valid RPC-over-RDMA version 1 CM Private Data, the\r\n>   receiver should check that the format version number field contains a\r\n>   valid and recognized version number and all reserved flag bits are\r\n>   zero.",
+          "createdAt": "2019-12-18T22:17:46Z",
+          "updatedAt": "2019-12-18T22:17:46Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "MDU6SXNzdWU1NjQ3MTk4OTA=",
+      "title": "IESG Ballot issue #1",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/5",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "----------------------------------------------------------------------\r\nDISCUSS:\r\n----------------------------------------------------------------------\r\n\r\nThanks for this document.  This is a simple DISCUSS point that should be very\r\neasy to resolve:\r\n\r\n\u2014 Section 5.2 \u2014\r\n\r\n  A sender computes the encoded\r\n  value by dividing the buffer size, in octets, by 1024 and subtracting\r\n  one from the result.\r\n\r\nIs the buffer size necessarily a multiple of 1024?  If so, where is that\r\nspecified?  If not, what is the encoded value when the buffer size is, say,\r\n2000?  Is it zero?  Or one?\r\n\r\n\r\n----------------------------------------------------------------------\r\nCOMMENT:\r\n----------------------------------------------------------------------\r\n\r\nSome purely editorial comments:\r\n\r\n\u2014 Abstract \u2014\r\nThe abstract needs to stand alone, so you should expand the term RDMA-CM in the\r\nabstract.  (RPC doesn\u2019t need expanding, so once you\u2019ve expanded RDMA-CM,\r\nRPC-over-RDMA should be OK.)\r\n\r\n\u2014 Introduction \u2014\r\nPlease expand \u201cXDR\u201d on first use.\r\n\r\n  Section 7 of the current document\r\n\r\n\u201cof this document\u201d is better, I think.\r\n\r\n\u2014 Section 3.2 \u2014\r\nPlease expand \u201cRNIC\u201d and \u201cSTag\u201d.\r\n\r\n  invalidation without the need for additional protocol to be defined.\r\n\r\nEither \u201can additional protocol\u201d or \u201cadditional protocols\u201d.\r\n\r\n\u2014 Section 4.1 \u2014\r\n\r\n  Realizing these goals\r\n  require that implementations of this extension follow the practices\r\n\r\nThe subject is \u201crealizing\u201d, which is singular.  So, \u201crequires\u2019.\r\n\r\n\u2014 Section 5.1 \u2014\r\n\r\n  Bits 14 - 8:  These bits are reserved and are always zero when the\r\n     Version field contains 1.\r\n\r\nIn other protocols, leaving it unspecified as to what happens if not all\r\nreserved bits are zero has caused interoperability problems.  If you know\r\nthat\u2019s not a concern here, that\u2019s fine.  Otherwise, it might be good to say\r\nexplicitly that either they are ignored on receipt or non-zero bits result in\r\nan error.",
+      "createdAt": "2020-02-13T14:27:45Z",
+      "updatedAt": "2020-02-13T16:12:15Z",
+      "closedAt": "2020-02-13T16:12:15Z",
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "> ----------------------------------------------------------------------\r\n> DISCUSS:\r\n> ----------------------------------------------------------------------\r\n> \r\n> Thanks for this document.  This is a simple DISCUSS point that should be very\r\n> easy to resolve:\r\n> \r\n> \u2014 Section 5.2 \u2014\r\n> \r\n>  A sender computes the encoded\r\n>  value by dividing the buffer size, in octets, by 1024 and subtracting\r\n>  one from the result.\r\n> \r\n> Is the buffer size necessarily a multiple of 1024?  If so, where is that\r\n> specified?  If not, what is the encoded value when the buffer size is, say,\r\n> 2000?  Is it zero?  Or one?\r\n\r\nGood catch! Buffer sizes are not constrained to 1024-byte length alignment.\r\n\r\nFurther, if a sender posts, say, a 2032-byte message to a receiver that uses\r\na 2000-byte buffer, a Receive error occurs that typically results in\r\nconnection loss.\r\n\r\nIMO Section 5.2 should instruct the sender to round the actual buffer length\r\ndown to the nearest 1024-byte multiple before encoding. Would that clarify\r\nthe issue for you?\r\n\r\n\r\n> ----------------------------------------------------------------------\r\n> COMMENT:\r\n> ----------------------------------------------------------------------\r\n> \r\n> Some purely editorial comments:\r\n> \r\n> \u2014 Abstract \u2014\r\n> The abstract needs to stand alone, so you should expand the term RDMA-CM in the\r\n> abstract.  (RPC doesn\u2019t need expanding, so once you\u2019ve expanded RDMA-CM,\r\n> RPC-over-RDMA should be OK.)\r\n> \r\n> \u2014 Introduction \u2014\r\n> Please expand \u201cXDR\u201d on first use.\r\n> \r\n>  Section 7 of the current document\r\n> \r\n> \u201cof this document\u201d is better, I think.\r\n> \r\n> \u2014 Section 3.2 \u2014\r\n> Please expand \u201cRNIC\u201d and \u201cSTag\u201d.\r\n> \r\n>  invalidation without the need for additional protocol to be defined.\r\n> \r\n> Either \u201can additional protocol\u201d or \u201cadditional protocols\u201d.\r\n> \r\n> \u2014 Section 4.1 \u2014\r\n> \r\n>  Realizing these goals\r\n>  require that implementations of this extension follow the practices\r\n> \r\n> The subject is \u201crealizing\u201d, which is singular.  So, \u201crequires\u2019.\r\n\r\nAgreed to all.\r\n\r\n\r\n> \u2014 Section 5.1 \u2014\r\n> \r\n>  Bits 14 - 8:  These bits are reserved and are always zero when the\r\n>     Version field contains 1.\r\n> \r\n> In other protocols, leaving it unspecified as to what happens if not all\r\n> reserved bits are zero has caused interoperability problems.  If you know\r\n> that\u2019s not a concern here, that\u2019s fine.  Otherwise, it might be good to say\r\n> explicitly that either they are ignored on receipt or non-zero bits result in\r\n> an error.\r\n\r\nGotcha. I can add a sentence that states \"When the Version field contains 1,\r\nreceivers MUST ignore reserved bits\".\r\n\r\nI will address all these comments in a subsequent revision.",
+          "createdAt": "2020-02-13T14:34:14Z",
+          "updatedAt": "2020-02-13T14:34:14Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "> > > \u2014 Section 5.2 \u2014\r\n> > > \r\n> > > A sender computes the encoded\r\n> > > value by dividing the buffer size, in octets, by 1024 and subtracting\r\n> > > one from the result.\r\n> > \r\n> > Is the buffer size necessarily a multiple of 1024?  If so, where is that\r\n> > specified?  If not, what is the encoded value when the buffer size is, say,\r\n> > 2000?  Is it zero?  Or one?\r\n> \r\n> Good catch! Buffer sizes are not constrained to 1024-byte length alignment.\r\n> \r\n> Further, if a sender posts, say, a 2032-byte message to a receiver that uses\r\n> a 2000-byte buffer, a Receive error occurs that typically results in\r\n> connection loss.\r\n> \r\n> IMO Section 5.2 should instruct the sender to round the actual buffer length\r\n> down to the nearest 1024-byte multiple before encoding. Would that clarify\r\n> the issue for you?\r\n\r\nYes, that would be quite clear.",
+          "createdAt": "2020-02-13T14:36:22Z",
+          "updatedAt": "2020-02-13T14:36:22Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWU1NjYzNzI3MjU=",
+      "title": "\u00c9ric Vyncke's IESG ballot comments",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/6",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Thank you for the work put into this document. I found this document not so easy to read as many acronyms are used without expansion (Stag, CM, ...) notably in the abstract. While the introduction simply refers to RFC 8166, a little more textual introduction would have been welcome.\r\n\r\nNevertheless, please find below some non-blocking COMMENTs (and I would appreciate a response from the authors but this is not required).\r\n\r\nI hope that this helps to improve the document,\r\n\r\nRegards,\r\n\r\n-\u00e9ric\r\n\r\n== COMMENTS ==\r\n\r\n-- Section 4 --\r\nJust by sheer curiosity, I wonder where the value \"0xf6ab0e18\" comes from ?\r\n\r\n-- Section 4.1.1 --\r\n\"bit 15 of the Flags field\" but the Flags field is only 8-bit long (to be honest, I am sure that I understand the meaning of this but being clearer would be better). Wording in section 5.1 should be used in section 4 when describing the Flags field.\r\n\r\nI would also suggest to name the different bits of the Flags field as usually done in other IETF documents.\r\n\r\n-- Section 5.1 --\r\nAbout the reserved bits, why not using the usual wording of \"set to 0 when sending and ignored when received\" ?",
+      "createdAt": "2020-02-17T15:30:12Z",
+      "updatedAt": "2020-02-19T21:32:39Z",
+      "closedAt": "2020-02-19T21:32:39Z",
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "> -- Section 4.1.1 --\r\n> \"bit 15 of the Flags field\" but the Flags field is only 8-bit long (to be honest, I am sure that I understand the meaning of this but being clearer would be better). Wording in section 5.1 should be used in section 4 when describing the Flags field.\r\n> \r\n> I would also suggest to name the different bits of the Flags field as usually done in other IETF documents.\r\n\r\nSeeing an example or two would help me pick a name consistent with other IETF publications. Please send one my way if you have a favorite.\r\n\r\nIf I define a name for the one flag used in Version 1, then Section 4.1.1 can refer to that flag by name instead of \"bit 15 of the Flags field\".\r\n\r\nPerhaps Section 5.1 should be moved to Section 4 as well.",
+          "createdAt": "2020-02-17T15:31:28Z",
+          "updatedAt": "2020-02-17T15:31:54Z"
+        },
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "> Thank you for the work put into this document. I found this document not so easy to read as many acronyms are used without expansion (Stag, CM, ...) notably in the abstract. While the introduction simply refers to RFC 8166, a little more textual introduction would have been welcome.\r\n\r\nThe document assumes the reader is already knowledgeable about this specific domain, true enough. I'm open to specific suggestions of what could be added to the Introduction to assist readers less familiar with the topic. I'm never sure how far back to start an Introduction section.",
+          "createdAt": "2020-02-17T15:33:10Z",
+          "updatedAt": "2020-02-17T15:33:10Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU1Njc4NjEzMjQ=",
+      "title": "Reference to [IBA] should be normative, not informative",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/7",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Roman Danyliw has entered the following ballot position for draft-ietf-nfsv4-rpcrdma-cm-pvt-data-07: No Objection\r\n\r\n----------------------------------------------------------------------\r\nCOMMENT:\r\n----------------------------------------------------------------------\r\n\r\nSection 6.  As there is dependence on the behavior defined in [IBA], this reference should be normative.",
+      "createdAt": "2020-02-19T21:33:53Z",
+      "updatedAt": "2020-02-21T15:20:26Z",
+      "closedAt": "2020-02-21T15:20:26Z",
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU1Njc4NjIzNzE=",
+      "title": "Adding registry items should be Specification Required, not Expert Review",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/8",
+      "state": "CLOSED",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "Alissa Cooper has entered the following ballot position for draft-ietf-nfsv4-rpcrdma-cm-pvt-data-07: No Objection\r\n\r\n----------------------------------------------------------------------\r\nCOMMENT:\r\n----------------------------------------------------------------------\r\n\r\nI'm not sure how strict we usually are about this, but the guidance in Section 7.1 makes it sound like the proper registration policy is actually Specification Required, not Expert Review.",
+      "createdAt": "2020-02-19T21:35:54Z",
+      "updatedAt": "2020-02-21T15:21:52Z",
+      "closedAt": "2020-02-21T15:21:52Z",
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU1NjgzNzU2NDk=",
+      "title": "Benjamin Kaduk's IESG ballot comments",
+      "url": "https://github.com/chucklever/i-d-rpcrdma-cm-pvt-data/issues/9",
+      "state": "OPEN",
+      "author": "chucklever",
+      "authorAssociation": "OWNER",
+      "assignees": [
+        "chucklever"
+      ],
+      "labels": [
+        "bug"
+      ],
+      "body": "I agree with Alissa.\r\n\r\nSection 4\r\n\r\n>   For RPC-over-RDMA version 1, the CM Private Data field is formatted\r\n>   as described in the following subsection.  RPC clients and servers\r\n>   use the same format.  If the capacity of the Private Data field is\r\n>   too small to contain this message format, the underlying RDMA\r\n>   transport is not managed by a Connection Manager, or the underlying\r\n>   RDMA transport uses Private Data for its own purposes, the CM Private\r\n>   Data field cannot be used on behalf of RPC-over-RDMA version 1.\r\n\r\nHow will an implementation know if \"the underlying RDMA transport uses\r\nPrivate Data for its own purposes\"?\r\n\r\nSection 5\r\n\r\n>   Although it is possible to reorganize the last three of the eight\r\n>   bytes in the existing format, extended formats are unlikely to do so.\r\n>   New formats would take the form of extensions of the format described\r\n>   in this document with added fields starting at byte eight of the\r\n>   format and changes to the definition of previously reserved flags.\r\n\r\nI would suggest making it a (mandatory) invariant of this format to\r\nretain these last three bytes' interpretation, requiring the use of a\r\ndifferent \"magic word\" for future versions that need to diverge from it.\r\nThe current text does not really give an implementation anything that it\r\ncan rely on.\r\n\r\nSection 6\r\n\r\n>   The RPC-over-RDMA version 1 protocol framework depends on the\r\n>   semantics of the Reliable Connected (RC) queue pair (QP) type, as\r\n>   defined in Section 9.7.7 of [IBA].  The integrity of CM Private Data\r\n\r\nIt's interesting to see such a reference to [IBA], when IIUC the RFC\r\n8166 protocol is not limited to Infiniband as the underlying transport.\r\n\r\n>   Additional analysis of RDMA transport security appears in the\r\n>   Security Considerations section of [RFC5042].  That document\r\n\r\nnit: the actual analysis isn't *in* the security considerations section\r\n(but is referenced from it).\r\n\r\n>   Improperly setting one of the fields in a version 1 Private Message\r\n>   can result in an increased risk of disconnection (i.e., self-imposed\r\n>   Denial of Service).  There is no additional risk of exposing upper-\r\n>   layer payloads after exchanging the Private Message format defined in\r\n>   the current document.\r\n\r\nI'm not entirely sure where or how one might have expected such\r\nadditional exposures to occur.\r\n\r\n\r\nWe should probably mention the risk that some (other) CM-private data\r\nitem might inadvertenly produce in its payload the \"magic number\" that\r\nwe use to identify this protocol's data structure.  I *think* (but\r\nplease confirm) that erroneously doing so would lead only to (likely)\r\nRDMA-channel disconnection and could not introduce (e.g.) data\r\ncorruption.\r\n\r\n>   In addition to describing the structure of a new format version, any\r\n>   document that extends the Private Data format described in the\r\n>   current document must discuss security considerations of new data\r\n>   items exchanged between connection peers.\r\n\r\nIn a similar vein, future extensions should consider what the risks of\r\nerroneously identifying \"random\" data as the new format would be.\r\n\r\nSection 7\r\n\r\nShould the registry also include the length of the private data?\r\n\r\nSimilarly to the previous section's comments, should prospective\r\nregistrations also be analyzing the risks to their protocol of\r\ninterpreting \"random\" data as the data structure (as would happen upon\r\nan inadvertent match of the \"magic number\")?\r\n\r\nSection 7.1\r\n\r\n>   The new Reference field should contain a reference to that\r\n>   documentation.  The DE can assign new Format Identifiers at random as\r\n>   long as they do not conflict with existing entries in this registry.\r\n\r\nRandom may not be the best choice for this, if there are ways to produce\r\nvalues that are less-likely-than-random to occur inadvertently in the\r\npayload of any of the registered formats.",
+      "createdAt": "2020-02-20T15:20:42Z",
+      "updatedAt": "2020-02-21T15:30:58Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "chucklever",
+          "authorAssociation": "OWNER",
+          "body": "Recording my action items:\r\n\r\n> > How will an implementation know if \"the underlying RDMA transport uses Private Data for its own purposes\"?\r\n> \r\n> That's what the Format Identifier is for. It indicates where the RPC/RDMA-specific data sits in the CM Private Data buffer. A compliant RPC/RDMA implementation does not assume it is the only user of the CM Private Data.\r\n\r\nSure ... but now we have some text saying that other uses of CM Private Data can't coexist with RPC-over-RDMA v1 (\"the underlying RDMA transport uses Private Data for its own purposes [...] cannot be used on behalf of RPC-over-RDMA version 1\") that seems in conflict with the goal of using the Format Identifier \"magic word\" to identify the RPC-over-RDMA private data within a larger assembly.  So we should probably try to resolve the apparent inconsistency.\r\n\r\n> > nit: the actual analysis isn't *in* the security considerations section (but is referenced from it).\r\n> \r\n> I can revisit RFC 5042 and extract those references.\r\n\r\nI don't think you need to bother pulling in the specific section references; I was just suggesting a minor tweak to something like \"are indicated by the Security Considerations section of [RFC5042]\".\r\n\r\n> > I'm not entirely sure where or how one might have expected such additional exposures to occur.\r\n> \r\n> Agreed. However, I was asked to make this statement here to make it clear that the proposed CM Private Data format does not put data further at risk. I'm open to suggested rewording.\r\n\r\nI think the key points are: \"Exchanging the data contained in the Private Message format defined in this document does not directly expose any upper-layer payloads to an attacker; furthermore, the behavior changes that may occur as a result of processing the Private Data do not introduce any new risk of exposure of upper-layer payload data to an attacker, since the RDMA transport protection continues to apply, and misconfiguration results only in disconnection\".\r\n\r\n> > I *think* (but please confirm) that erroneously doing so would lead only to (likely) RDMA-channel disconnection and could not introduce (e.g.) data corruption.\r\n> \r\n> Yes, my expectation is that it would have the same consequences as someone tampering with the RPC/RDMA CM Private Data.\r\n> \r\n> I will see about mentioning this failure mode in the text.\r\n\r\nThanks.\r\n\r\n> > In addition to describing the structure of a new format version, any document that extends the Private Data format described in the current document must discuss security considerations of new data items exchanged between connection peers.\r\n> >\r\n> > In a similar vein, future extensions should consider what the risks of erroneously identifying \"random\" data as the new format would be.\r\n> \r\n> AI: Chuck\r\n\r\n> > Should the registry also include the length of the private data?\r\n> \r\n> I can add that.\r\n\r\n> > Section 7.1\r\n> > \r\n> > The new Reference field should contain a reference to that documentation.  The DE can assign new Format Identifiers at random as long as they do not conflict with existing entries in this registry.\r\n> > \r\n> > Random may not be the best choice for this, if there are ways to produce values that are less-likely-than-random to occur inadvertently in the payload of any of the registered formats.\r\n> \r\n> I chose the current Format Identifier for RPC/RDMA CM Private Data by extracting the middle bits from a randomly-generated UUID. That's why the text uses the \"random\" wording.\r\n> \r\n> IMO we want to avoid choosing values like 0x00000007, precisely because they are likely to look like a payload. I think we are agreeing here.\r\n>\r\n> Another sentence might be necessary to explain that a new Identifier should be chosen so that it will not look like a payload of other registered formats. That might be challenging for DEs to carry out in practice.\r\n\r\nI don't think we need to require the DEs to perform an exhaustive analysis that any given value is provably not possible to occur in a compliant implementation of any other extant payload type (that sounds really hard!). Mostly I just want it written down that that's a risk to keep in mind when making new allocations.\r\n",
+          "createdAt": "2020-02-21T15:30:58Z",
+          "updatedAt": "2020-02-21T15:30:58Z"
+        }
+      ]
+    }
+  ],
+  "pulls": []
+}
